@@ -12,11 +12,11 @@ import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
   plugins: [vue()],
-  base: '/fmonroy-vue/', // Cambia al nombre de tu repositorio
+  base: '/', // Cambia al nombre de tu repositorio
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
-    publicPath: '/fmonroy-vue/',
+    publicPath: '/',
     rollupOptions: {
       output: {
         manualChunks: {
