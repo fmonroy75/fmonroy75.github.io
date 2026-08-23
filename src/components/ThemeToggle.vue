@@ -3,22 +3,17 @@
           class="theme-toggle-btn"
           :aria-label="themeText"
           :title="themeText">
-    
-    <!-- Sol (modo claro) -->
-    <div v-if="!isDark" class="icon-wrapper">
-      <i class="bi bi-sun-fill sun-icon"></i>
-      <span class="sun-rays"></span>
-      
-    </div>
-    
-    <!-- Luna (modo oscuro) -->
-    <div v-else class="icon-wrapper">
-      <i class="bi bi-moon-fill moon-icon"></i>
-      <span class="stars">
-        <span class="star"></span>
-        <span class="star"></span>
-        <span class="star"></span>
-      </span>
+    <div class="toggle-track">
+      <!-- Sun Icon -->
+      <div class="icon-box sun-box" :class="{ 'active': !isDark }">
+        <i class="bi bi-sun-fill"></i>
+      </div>
+      <!-- Moon Icon -->
+      <div class="icon-box moon-box" :class="{ 'active': isDark }">
+        <i class="bi bi-moon-stars-fill"></i>
+      </div>
+      <!-- Sliding Pill -->
+      <div class="toggle-thumb" :class="{ 'is-dark': isDark }"></div>
     </div>
   </button>
 </template>
@@ -33,173 +28,82 @@ const toggleTheme = () => {
   themeStore.toggleTheme()
 }
 
-// Leer .value para que Vue trackee el ref y el icono cambie al hacer toggle
 const isDark = computed(() => themeStore.isDark?.value ?? false)
-const themeText = computed(() => isDark.value ? 'Modo claro' : 'Modo oscuro')
+const themeText = computed(() => isDark.value ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro')
 </script>
 
 <style scoped>
 .theme-toggle-btn {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  border: 2px solid var(--bs-accent);
-  background: white;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  border-radius: 100px;
+  padding: 4px;
   cursor: pointer;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  outline: none;
   transition: all 0.3s ease;
-  padding: 0;
-  margin: 0 10px;
+  backdrop-filter: blur(8px);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.04);
 }
 
 [data-bs-theme="dark"] .theme-toggle-btn {
-  background: #1e293b;
-  border-color: #2DD4BF;
+  background: rgba(17, 24, 39, 0.7);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-.icon-wrapper {
+.theme-toggle-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(45, 212, 191, 0.3);
+}
+
+.toggle-track {
   position: relative;
-  width: 100%;
-  height: 100%;
+  width: 60px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4px;
+}
+
+.icon-box {
+  width: 24px;
+  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 2;
+  font-size: 0.85rem;
+  transition: color 0.3s ease, transform 0.3s ease;
+  color: #94A3B8;
 }
 
-/* Sol */
-.sun-icon {
-  font-size: 28px;
-  color: #0D9488;
-  animation: pulse 2s ease-in-out infinite;
+.sun-box.active {
+  color: #F59E0B;
+  transform: rotate(45deg);
 }
 
-.sun-rays {
+.moon-box.active {
+  color: #38BDF8;
+  transform: rotate(-12deg);
+}
+
+.toggle-thumb {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 100%;
-  height: 100%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-}
-
-.sun-rays::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 100%;
-  height: 100%;
-  border: 2px solid var(--bs-accent);
+  top: 2px;
+  left: 2px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
-  transform: translate(-50%, -50%);
-  animation: sunRays 2s linear infinite;
+  background: linear-gradient(135deg, #0D9488 0%, #2DD4BF 100%);
+  z-index: 1;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 2px 6px rgba(13, 148, 136, 0.4);
 }
 
-@keyframes sunRays {
-  0% {
-    opacity: 0.5;
-    transform: translate(-50%, -50%) scale(0.8);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(1.5);
-  }
-}
-
-/* Luna */
-.moon-icon {
-  font-size: 24px;
-  color: #2DD4BF;
-  filter: drop-shadow(0 0 6px rgba(45, 212, 191, 0.5));
-}
-
-.stars {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%;
-  height: 100%;
-}
-
-.star {
-  position: absolute;
-  background: white;
-  border-radius: 50%;
-  animation: twinkle 1.5s ease-in-out infinite;
-}
-
-.star:nth-child(1) {
-  width: 3px;
-  height: 3px;
-  top: 5px;
-  left: 10px;
-}
-
-.star:nth-child(2) {
-  width: 4px;
-  height: 4px;
-  top: 15px;
-  right: 8px;
-  animation-delay: 0.5s;
-}
-
-.star:nth-child(3) {
-  width: 2px;
-  height: 2px;
-  bottom: 12px;
-  left: 12px;
-  animation-delay: 1s;
-}
-
-@keyframes twinkle {
-  0%, 100% {
-    opacity: 0.3;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.2);
-  }
-}
-
-@keyframes pulse {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.1);
-  }
-}
-
-/* Hover */
-.theme-toggle-btn:hover {
-  transform: scale(1.1);
-  box-shadow: 0 5px 18px rgba(13, 148, 136, 0.35);
-}
-
-[data-bs-theme="dark"] .theme-toggle-btn:hover {
-  box-shadow: 0 5px 18px rgba(45, 212, 191, 0.4);
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .theme-toggle-btn {
-    width: 42px;
-    height: 42px;
-    margin: 0 5px;
-  }
-  
-  .sun-icon {
-    font-size: 24px;
-  }
-  
-  .moon-icon {
-    font-size: 20px;
-  }
+.toggle-thumb.is-dark {
+  transform: translateX(32px);
+  background: linear-gradient(135deg, #6366F1 0%, #38BDF8 100%);
+  box-shadow: 0 2px 6px rgba(56, 189, 248, 0.4);
 }
 </style>
