@@ -14,11 +14,8 @@
     <nav class="navbar navbar-expand-lg fixed-top glass-navbar" :class="{ 'navbar-scrolled': isScrolled }">
       <div class="container">
         <!-- Logo Brand -->
-        <a class="navbar-brand d-flex align-items-center gap-3" href="#home" @click.prevent="scrollToSection('home')">
-          <div class="brand-logo-container">
-            <img :src="logoImage" alt="Francisco Monroy" class="brand-logo-img">
-            <div class="brand-logo-ring"></div>
-          </div>
+        <a class="navbar-brand d-flex align-items-center gap-2" href="#home" @click.prevent="scrollToSection('home')">
+          <img :src="logoImage" alt="Francisco Monroy" class="brand-logo-img rounded-circle">
           <div class="d-flex flex-column">
             <span class="fw-bold fs-5 brand-name">
               F.<span class="text-gradient-accent">Monroy</span>
@@ -248,41 +245,17 @@ onUnmounted(() => {
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.brand-logo-container {
-  position: relative;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .brand-logo-img {
-  width: 44px;
-  height: 44px;
+  height: 50px;
+  width: auto;
   object-fit: cover;
   border-radius: 50%;
   transition: transform 0.3s ease;
-}
-
-.brand-logo-ring {
-  position: absolute;
-  inset: -3px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #0D9488, #2DD4BF, #6366F1);
-  z-index: -1;
-  opacity: 0.7;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  image-rendering: -webkit-optimize-contrast;
 }
 
 .navbar-brand:hover .brand-logo-img {
-  transform: scale(1.08);
-}
-
-.navbar-brand:hover .brand-logo-ring {
-  opacity: 1;
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 
 .brand-name {
